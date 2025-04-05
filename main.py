@@ -1,10 +1,22 @@
 from fastapi import FastAPI
-import qrcode
+from pydantic import BaseModel
 from fastapi.responses import StreamingResponse
 from io import BytesIO
+import qrDinamico
 
-from qrcode.image.styledpil import StyledPilImage
-from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
+
+class QR(BaseModel):
+    """
+    Model for QR code data.
+    """
+    data: str
+    logoURL: str
+    back_color: str
+    edge_color: str
+    center_color: str
+    selected_drawer: str
+    ratio: float
+
 
 app = FastAPI()
 
@@ -14,32 +26,20 @@ async def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/qrActivoFijo/{data}")
-async def generate_qr(data: str):
+@app.get("/qrActivoFijo")
+async def generate_qr(qr: QR):
     """
     Generate a QR code for the given data and return it as an image.
     """
-    #
-    data = "https://example.com/" + data
-
-    # Create a QR code instance
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_H,
-        box_size=10,
-        border=4,
-    )
-
-    # Add data to the QR code
-    qr.add_data(data)
-    qr.make(fit=True)
-
     # Create an image from the QR code instance
-    img = qr.make_image(
-        image_factory=StyledPilImage,
-        module_drawer=RoundedModuleDrawer(),
-        fill_color="black", 
-        back_color="white"
+    img = qrDinamico.makeQR(
+        qr.data,
+        qr.logoURL,
+        qr.back_color,
+        qr.edge_color,
+        qr.center_color,
+        qr.selected_drawer,
+        qr.ratio
     )
 
     # Save the image to a BytesIO object
