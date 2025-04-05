@@ -1,4 +1,3 @@
-```markdown
 # QR Code Generator API
 
 Una API REST desarrollada con FastAPI para generar códigos QR con estilo personalizado.
@@ -23,11 +22,13 @@ Esta API permite generar códigos QR para el sistema de Activo Fijo, con las sig
 ```bash
 git clone https://github.com/tu-usuario/qrAPI.git
  ```
-```
 
 2. Instalar dependencias usando uv (recomendado) o pip:
 ```bash
 uv pip install -r requirements.txt
+or
+
+uv sync
  ```
 
 ## Uso
@@ -44,14 +45,24 @@ Response: {"Hello": "World"}
  ```
  Generar QR para Activo Fijo
 ```plaintext
-GET /qrActivoFijo/{data}
+GET /qrActivoFijo/
 Response: Imagen PNG del código QR
  ```
 
 Ejemplo de uso:
 
 ```plaintext
-GET /qrActivoFijo/12345
+GET /qrActivoFijo
+body
+{
+    "data": "https://example.com/https://example.com/12345",
+    "logoURL": "",
+    "back_color": "#232B99",
+    "edge_color": "#FFF200",
+    "center_color": "#FFF200",
+    "selected_drawer": "square",
+    "ratio": 0.3
+}
  ```
 
 Generará un código QR que enlaza a: https://example.com/12345
@@ -59,7 +70,7 @@ Generará un código QR que enlaza a: https://example.com/12345
 ## Características Técnicas
 - Framework: FastAPI
 - Generación de QR: qrcode
-- Estilo: Módulos redondeados
+- Estilo: Multiples Modulos
 - Formato de salida: PNG
 - Error Correction Level: H (Alto)
 - Tamaño de módulo: 10
