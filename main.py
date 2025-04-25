@@ -15,7 +15,10 @@ class QR(BaseModel):
     edge_color: str
     center_color: str
     selected_drawer: str
+    selected_error: str
     ratio: float
+    box_size: int
+    border: int
 
 
 app = FastAPI()
@@ -39,7 +42,10 @@ async def generate_qr(qr: QR):
         qr.edge_color,
         qr.center_color,
         qr.selected_drawer,
-        qr.ratio
+        qr.ratio,
+        qr.box_size,
+        qr.border,
+        qr.selected_error
     )
 
     # Save the image to a BytesIO object

@@ -1,5 +1,6 @@
 import qrcode
 
+import qrcode.constants
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers.pil import CircleModuleDrawer, GappedSquareModuleDrawer, HorizontalBarsDrawer, VerticalBarsDrawer, RoundedModuleDrawer, SquareModuleDrawer
 from qrcode.image.styles.colormasks import RadialGradiantColorMask
@@ -14,8 +15,15 @@ module_drawers = {
     'default': SquareModuleDrawer()
 }
 
+error_correction = {
+    'low': qrcode.constants.ERROR_CORRECT_L,
+    'medium': qrcode.constants.ERROR_CORRECT_M,
+    'quartile': qrcode.constants.ERROR_CORRECT_Q,
+    'high': qrcode.constants.ERROR_CORRECT_H,
+    'default': qrcode.constants.ERROR_CORRECT_M
+}
 
-def makeQR(data: str,  logoURL: str, back_color: str = "#FFFFFF", edge_color: str = "#000000", center_color: str = "#000000", selected_drawer: str = "default", ratio: float = 0.5):
+def makeQR(data: str, logoURL: str, back_color: str = "#FFFFFF", edge_color: str = "#000000", center_color: str = "#000000", selected_drawer: str = "default", ratio: float = 0.5,box_size:int = 10, border:int = 4, selected_error: str = "default"):
     """
     Generates a QR code with a logo in the center and a radial gradient color mask.	
     """
@@ -26,9 +34,9 @@ def makeQR(data: str,  logoURL: str, back_color: str = "#FFFFFF", edge_color: st
     # Create a QR code instance
     qr = qrcode.QRCode(
         version=3,
-        error_correction=qrcode.constants.ERROR_CORRECT_H,
-        box_size=10,
-        border=4,
+        error_correction=error_correction.get(selected_error, error_correction['default']),
+        box_size=box_size,
+        border=border,
     )
 
     # Add data to the QR code
@@ -47,7 +55,8 @@ def makeQR(data: str,  logoURL: str, back_color: str = "#FFFFFF", edge_color: st
             center_color=centerColor
         ),
         embeded_image_path=logoURL,
-        embeded_image_ratio=ratio
+        embeded_image_ratio=ratio,
+
     )
     return img
 
