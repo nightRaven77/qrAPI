@@ -37,7 +37,7 @@ uv sync
 uvicorn main:app --reload
  ```
 
-2. La API estará disponible en http://localhost:8000
+2. La API estará disponible en http://localhost:8090
 ### Endpoints Disponibles Ruta Principal
 ```plaintext
 GET /
@@ -78,8 +78,8 @@ Generará un código QR que enlaza a: https://example.com/12345
 ## Documentación API
 FastAPI genera automáticamente la documentación de la API. Puedes acceder a:
 
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+- Swagger UI: http://localhost:8090/docs
+- ReDoc: http://localhost:8090/redoc
 ## Desarrollo
 El proyecto utiliza:
 

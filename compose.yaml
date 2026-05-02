@@ -1,21 +1,46 @@
 services:
-  example:
-    build: .
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: qr_api
+    # Exponer API al host en 8090
+    ports:
+      - "8090:8000"
+    environment:
+      WEB_CONCURRENCY: "2"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
 
-    # ...
 
-    develop:
-      # Create a `watch` configuration to update the app
-      #
-      watch:
-        # Sync the working directory with the `/app` directory in the container
-        - action: sync
-          path: .
-          target: /app
-          # Exclude the project virtual environment
-          ignore:
-            - .venv/
 
-        # Rebuild the image on changes to the `pyproject.toml`
-        - action: rebuild
-          path: ./pyproject.toml
+
+
+
+
+# services:
+#   example:
+#     build: .
+
+#     # ...
+
+#     develop:
+#       # Create a `watch` configuration to update the app
+#       #
+#       watch:
+#         # Sync the working directory with the `/app` directory in the container
+#         - action: sync
+#           path: .
+#           target: /app
+#           # Exclude the project virtual environment
+#           ignore:
+#             - .venv/
+
+#         # Rebuild the image on changes to the `pyproject.toml`
+#         - action: rebuild
+#           path: ./pyproject.toml

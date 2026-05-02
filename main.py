@@ -21,15 +21,20 @@ class QR(BaseModel):
     border: int
 
 
-app = FastAPI()
+app = FastAPI(
+    title="QR API",
+    version="1.2"
+)
 
 
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
 
 
-@app.get("/qrActivoFijo")
+@app.get("/health", tags=["system"])
+def health_check():
+    return {"nombre": "QR Api","status": "ok", "version": "1.2"}
+
+
+@app.get("/qr")
 async def generate_qr(qr: QR):
     """
     Generate a QR code for the given data and return it as an image.
